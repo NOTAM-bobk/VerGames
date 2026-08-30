@@ -30,7 +30,7 @@ body { @apply bg-background text-foreground; font-family: "DM Sans", ui-sans-ser
 button, a, input { -webkit-tap-highlight-color: transparent; }
 .font-display { font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif; }
 .eyebrow { color: #8a96a3; font-size: 10px; font-weight: 700; letter-spacing: .16em; line-height: 1.2; text-transform: uppercase; }
-.brand-mark { display: grid; height: 28px; width: 28px; place-items: center; overflow: hidden; border-radius: 7px; background: #f48120; box-shadow: 0 2px 8px rgb(244 129 32 / 18%); }
+.brand-mark { display: grid; height: 28px; width: 28px; place-items: center; overflow: hidden; border-radius: 7px; background: #f48120; box-shadow: 0 2px 8px rgb(244 129 32 / 18%); } .wordmark-signal { display: inline-block; height: 10px; width: 6px; margin: 0 2px 0 1px; transform: skew(-20deg); background: #f48120; }
 .brand-mark img { height: 100%; width: 100%; object-fit: contain; }
 .category-link { display: flex; width: 100%; align-items: center; justify-content: space-between; border-left: 2px solid transparent; padding: 9px 11px; color: #708090; font-size: 13px; text-align: left; transition: color 180ms cubic-bezier(.23,1,.32,1), background-color 180ms cubic-bezier(.23,1,.32,1), border-color 180ms cubic-bezier(.23,1,.32,1); }
 .category-link:hover { background: #eef1f4; color: #253242; }
@@ -39,10 +39,10 @@ button, a, input { -webkit-tap-highlight-color: transparent; }
 .filter-chip:hover { background: #eef1f4; color: #344254; }
 .filter-chip-active { background: #182230; color: white; }
 .game-card { animation: card-in 380ms cubic-bezier(.23,1,.32,1) both; }
-.game-card:hover .skeleton-shimmer { opacity: .7; }
-.empty-state { display: grid; min-height: 300px; place-items: center; border: 1px dashed #d9dfe5; border-radius: 18px; padding: 40px 24px; text-align: center; }
+.game-card:hover { transform: translateY(-3px); transition: transform 180ms cubic-bezier(.23,1,.32,1); } .game-card:hover .skeleton-shimmer { opacity: .7; }
+.empty-state { display: grid; min-height: 300px; place-items: center; border: 1px dashed #d9dfe5; border-radius: 18px; padding: 40px 24px; text-align: center; background: rgb(255 255 255 / 28%); }
 .empty-state img { height: 120px; width: 180px; object-fit: cover; opacity: .75; }
-.skeleton-shimmer { background: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 45%) 42%, transparent 62%); background-size: 200% 100%; animation: shimmer 2.8s linear infinite; transition: opacity 180ms ease-out; }
+.skeleton-shimmer { background: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 55%) 42%, transparent 62%); background-size: 200% 100%; animation: shimmer 2.8s linear infinite; transition: opacity 180ms ease-out; }
 @keyframes shimmer { to { background-position: -200% 0; } }
 @keyframes card-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

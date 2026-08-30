@@ -30,7 +30,7 @@ function App() {
         <div className="mx-auto flex h-[72px] max-w-[1440px] items-center gap-5 px-5 sm:px-8">
           <a href="/" className="group flex shrink-0 items-center gap-3" aria-label="VerGames home">
             <span className="brand-mark"><img src="/manus-storage/vergames-logo_60ac709a.png" alt="" /></span>
-            <span className="font-display text-[17px] font-bold tracking-[-0.04em]">VerGames</span>
+            <span className="font-display flex items-center text-[17px] font-bold tracking-[-0.055em]"><span>Ver</span><span className="wordmark-signal" aria-hidden="true" /><span>Games</span></span>
           </a>
           <div className="hidden h-7 w-px bg-[#dde2e8] sm:block" />
           <div className="relative min-w-0 flex-1">
@@ -71,7 +71,7 @@ function App() {
             </div>
           </section>
 
-          <div className="mt-10 flex flex-col gap-5 border-b border-[#e1e6eb] pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mt-10 flex flex-col gap-5 border-b border-[#e1e6eb] pb-5 sm:flex-row sm:items-end sm:justify-between"><div className="sr-only">Indexed library</div>
             <div><p className="eyebrow mb-2">Catalog / {activeCategory}</p><h2 className="font-display text-2xl font-bold tracking-[-0.05em]">Find your next game</h2></div>
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
               {filters.map((filter) => <button key={filter} onClick={() => setActiveFilter(filter)} className={`filter-chip ${activeFilter === filter ? "filter-chip-active" : ""}`}>{filter}</button>)}
@@ -82,10 +82,10 @@ function App() {
           {showFilters && <div className="mt-5 flex flex-wrap gap-2 rounded-xl border border-[#e1e6eb] bg-white p-4 text-sm text-[#657383]"><span className="mr-2 self-center font-semibold text-[#344254]">Coming soon:</span><span className="rounded-md bg-[#f3f5f7] px-3 py-1.5">Difficulty</span><span className="rounded-md bg-[#f3f5f7] px-3 py-1.5">Multiplayer</span><span className="rounded-md bg-[#f3f5f7] px-3 py-1.5">Play time</span></div>}
 
           <section className="mt-7" aria-live="polite">
-            {visiblePlaceholders.length > 0 ? <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{visiblePlaceholders.map((game, index) => <GameCardSkeleton key={game.id} game={game} index={index} />)}</div> : <div className="empty-state"><img src="/manus-storage/vergames-empty-state_9c5c1f6f.png" alt="" /><p className="eyebrow">No matches yet</p><h3 className="font-display mt-2 text-xl font-bold tracking-[-0.04em]">Try another search</h3><p className="mt-2 text-sm text-[#73808e]">The library is still loading. Clear your search to see the upcoming catalog.</p></div>}
+            {visiblePlaceholders.length > 0 ? <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{visiblePlaceholders.map((game, index) => <GameCardSkeleton key={game.id} game={game} index={index} featured={index === 0} />)}</div> : <div className="empty-state"><img src="/manus-storage/vergames-empty-state_9c5c1f6f.png" alt="" /><p className="eyebrow">No matches yet</p><h3 className="font-display mt-2 text-xl font-bold tracking-[-0.04em]">Try another search</h3><p className="mt-2 text-sm text-[#73808e]">The library is still loading. Clear your search to see the upcoming catalog.</p></div>}
           </section>
 
-          <div className="mt-12 flex flex-col gap-4 border-t border-[#e1e6eb] pt-5 text-xs text-[#8a96a3] sm:flex-row sm:items-center sm:justify-between"><span>Showing {visiblePlaceholders.length} upcoming titles</span><span className="inline-flex items-center gap-2"><Sparkles className="size-3.5 text-[#f48120]" />Built for quick play</span></div>
+          <div className="mt-12 flex flex-col gap-4 border-t border-[#e1e6eb] pt-5 text-xs text-[#8a96a3] sm:flex-row sm:items-center sm:justify-between"><span><span className="mr-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[#a4adb7]">Index</span> Showing {visiblePlaceholders.length} upcoming titles</span><span className="inline-flex items-center gap-2"><Sparkles className="size-3.5 text-[#f48120]" />Built for quick play</span></div>
         </div>
       </main>
       <footer className="border-t border-[#e2e6eb] bg-white/50"><div className="mx-auto flex max-w-[1440px] flex-col gap-2 px-5 py-7 text-xs text-[#8a96a3] sm:flex-row sm:items-center sm:justify-between sm:px-8"><span>© 2026 VerGames</span><span>Free to play · More games on the way</span></div></footer>

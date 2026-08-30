@@ -1,0 +1,10 @@
+{
+  "name": "VerGames",
+  "short_name": "VerGames",
+  "description": "A clean, carefully curated home for browser games.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8fa",
+  "theme_color": "#f7f8fa",
+  "icons": [{ "src": "/manus-storage/vergames-logo_60ac709a.png", "sizes": "192x192", "type": "image/png" }]
+}

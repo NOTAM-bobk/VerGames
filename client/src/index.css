@@ -49,5 +49,13 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .list-arrow { display: grid; height: 32px; width: 32px; place-items: center; border: 1px solid #e7e8e4; border-radius: 50%; color: #a5a7a2; transition: color 160ms ease-out, border-color 160ms ease-out, background-color 160ms ease-out; }
 .game-list-row:hover .list-arrow { border-color: rgb(244 129 32 / 35%); background: #fff8f0; color: #f48120; }
 .empty-list { border: 1px dashed #dfe1dc; border-radius: 12px; padding: 44px 24px; text-align: center; background: rgb(255 255 255 / 45%); }
+.list-game-icon-live { border-color: rgb(244 129 32 / 30%); background: #fff8f0; color: #f48120; }
+.list-badge-live { background: #fff3e6; color: #d96a08; }
+.list-arrow-live { border-color: rgb(244 129 32 / 35%); background: #fff8f0; color: #f48120; cursor: pointer; }
+.list-arrow-live:hover { background: #f48120; border-color: #f48120; color: #fff; }
+.player-panel { border: 1px solid #e3e4e1; border-radius: 14px; background: rgb(255 255 255 / 90%); padding: 16px; box-shadow: 0 10px 28px rgb(35 36 31 / 4%); }
+.player-frame { position: relative; border: 1px solid #e5e6e2; border-radius: 10px; overflow: hidden; background: #101112; aspect-ratio: 16 / 10; }
+.player-iframe { display: block; height: 100%; width: 100%; border: 0; }
+@media (max-width: 639px) { .player-frame { aspect-ratio: 4 / 5; } }
 @media (max-width: 639px) { .dot-field { background-size: 22px 22px; } .search-shell { height: 62px; } .reference-filter { padding-left: 8px; padding-right: 8px; } .game-list-row { min-height: 82px; padding: 14px 14px 14px 15px; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

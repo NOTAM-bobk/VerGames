@@ -42,3 +42,9 @@ client/public/games/               Reserved for future self-hosted game builds
 vercel.json                        Vercel build/output/routing configuration
 ideas.md                           Design system and style decisions
 ```
+
+## Current collection
+
+The first curated collection includes MicropolisJS, Ancient Beast, Athena Crisis, OpenPanzer, and IsoCity. They are listed with category, description, official play destination, source repository, and rights-review metadata in `client/src/data/games.ts`.
+
+For this first pass, the Play action opens each official project page in a new tab instead of forcing an iframe. This avoids copying or hotlinking assets and avoids assuming that an external site permits framing. An iframe/player route should be added only for a title with an explicit approved embed URL and terms that cover third-party placement and VerGames advertising.

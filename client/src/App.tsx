@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, ChevronDown, Filter, Search, SlidersHorizontal, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { GameListRow } from "@/components/GameListRow";
-import { gameCategories, gamePlaceholders, type GameCategory } from "@/data/games";
+import { catalogGames, type GameCategory } from "@/data/games";
 
 const quickFilters = ["All games", "Action", "Arcade", "Puzzle", "Strategy", "Sports", "Card"] as const;
 const sortOptions = ["Recently added", "A–Z", "Category"] as const;
@@ -17,7 +17,7 @@ function App() {
   const [showMoreFilters, setShowMoreFilters] = useState(false);
 
   const visibleGames = useMemo(() => {
-    const filtered = gamePlaceholders.filter((game) => {
+    const filtered = catalogGames.filter((game) => {
       const matchesCategory = activeCategory === "All games" || game.category === activeCategory;
       const matchesQuery = `${game.title} ${game.category}`.toLowerCase().includes(query.toLowerCase());
       return matchesCategory && matchesQuery;

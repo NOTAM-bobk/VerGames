@@ -1,6 +1,6 @@
 /* Edge Utility: skeleton cards are calm, technical placeholders for the future curated catalog. */
 import { Gamepad2, LockKeyhole } from "lucide-react";
-import type { CatalogGame } from "@/data/games";
+import type { PlaceholderGame } from "@/data/games";
 
 const textureByAccent: Record<"orange" | "blue" | "graphite" | "slate" | "mist", string> = {
   orange: "from-[#fff2e7] via-[#f9e7d8] to-[#f1f3f5]",
@@ -10,7 +10,7 @@ const textureByAccent: Record<"orange" | "blue" | "graphite" | "slate" | "mist",
   mist: "from-[#edf4f4] via-[#edf0f0] to-[#f5f5f4]",
 };
 
-export function GameCardSkeleton({ game, index, featured = false }: { game: CatalogGame; index: number; featured?: boolean }) {
+export function GameCardSkeleton({ game, index, featured = false }: { game: PlaceholderGame; index: number; featured?: boolean }) {
   return (
     <article className={`game-card group ${featured ? "sm:col-span-2 xl:col-span-2" : ""}`} style={{ animationDelay: `${index * 45}ms` }} aria-label={`${game.category} game placeholder`}>
       <div className={`relative overflow-hidden rounded-[15px] border border-[#dce2e7] bg-[#eef1f3] ${featured ? "aspect-[2.08/1]" : "aspect-[1.55/1]"}`}><div className={`absolute inset-0 bg-gradient-to-br ${textureByAccent["slate"]} opacity-30`} />

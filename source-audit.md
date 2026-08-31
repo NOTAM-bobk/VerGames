@@ -23,3 +23,7 @@ The collection now includes five projects from the user-provided open-source-gam
 MicropolisJS has a project-level license page describing GPLv3 distribution with additional terms, including a prohibition on implying affiliation with Electronic Arts and a requirement to preserve the copyright notice. The other four entries remain link-out candidates until their individual repository licenses and any third-party asset terms are reviewed. A direct iframe or self-hosted build should only be added after each project passes that title-level review and permits the intended ad-supported placement.
 
 The Free Games Jungle and GameDistribution sources were not used to download or hotlink game files because their public pages do not provide a blanket, title-level license for this use. They remain future sourcing options after written permission or an approved publisher integration is obtained.
+
+## Embed validation follow-up
+
+The managed preview showed a blank player pane for 2048 because `play2048.co` publishes a Content Security Policy with `frame-ancestors` restricted to its own domains and related domains. VerGames now opens 2048 at its official site instead of embedding it. The iframe player remains available for sources whose framing permissions and behavior are verified.

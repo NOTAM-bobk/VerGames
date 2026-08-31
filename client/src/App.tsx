@@ -1,19 +1,30 @@
 /* Edge Utility refinement: centered utility workspace, dotted paper texture, quiet list hierarchy, orange for signals only. */
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, ChevronDown, Filter, Search, SlidersHorizontal, X } from "lucide-react";
+import { AlertTriangle, ChevronDown, Filter, Search, SlidersHorizontal, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { GameListRow, PlayableGameRow } from "@/components/GameListRow";
 import { GamePlayerView } from "@/components/GamePlayerView";
+import { SettingsMenu, readDisplayName, readPanicUrl } from "@/components/SettingsMenu";
+import { InfoPageView, type InfoPageKind } from "@/components/InfoPageView";
 import { gameCategories, gamePlaceholders, playableGames, type GameCategory, type PlayableGame } from "@/data/games";
 
-const quickFilters = ["All games", "Action", "Arcade", "Puzzle", "Strategy", "Sports", "Card"] as const;
 const sortOptions = ["Recently added", "A–Z", "Category"] as const;
 
 type SortOption = (typeof sortOptions)[number];
+type Overlay = { kind: "game"; game: PlayableGame } | { kind: "info"; page: InfoPageKind } | null;
 
-function readGameFromUrl(): PlayableGame | null {
-  const gameId = new URLSearchParams(window.location.search).get("game");
-  return playableGames.find((game) => game.id === gameId) ?? null;
+function readOverlayFromUrl(): Overlay {
+  const params = new URLSearchParams(window.location.search);
+  const gameId = params.get("game");
+  if (gameId) {
+    const game = playableGames.find((candidate) => candidate.id === gameId);
+    if (game) return { kind: "game", game };
+  }
+  const pageParam = params.get("page");
+  if (pageParam === "about" || pageParam === "terms" || pageParam === "privacy") {
+    return { kind: "info", page: pageParam };
+  }
+  return null;
 }
 
 function PixelLoader() {
@@ -45,7 +56,9 @@ function App() {
   const [activeCategory, setActiveCategory] = useState<GameCategory>("All games");
   const [sort, setSort] = useState<SortOption>("Recently added");
   const [showMoreFilters, setShowMoreFilters] = useState(false);
-  const [activeGame, setActiveGame] = useState<PlayableGame | null>(() => readGameFromUrl());
+  const [displayName, setDisplayName] = useState(readDisplayName);
+  const [panicUrl, setPanicUrl] = useState(readPanicUrl);
+  const [overlay, setOverlay] = useState<Overlay>(() => readOverlayFromUrl());
 
   // Simulated fetch of the game catalog on page load.
   useEffect(() => {
@@ -53,24 +66,35 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Keep the player in sync with browser back/forward navigation.
+  // Keep overlays in sync with browser back/forward navigation.
   useEffect(() => {
-    const onPopState = () => setActiveGame(readGameFromUrl());
+    const onPopState = () => setOverlay(readOverlayFromUrl());
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
   const openGame = (game: PlayableGame) => {
     window.history.pushState({ gameId: game.id }, "", `?game=${game.id}`);
-    setActiveGame(game);
+    setOverlay({ kind: "game", game });
     window.scrollTo({ top: 0 });
   };
 
-  const closeGame = () => {
-    if (window.location.search.includes("game=")) {
+  const openInfo = (page: InfoPageKind) => {
+    window.history.pushState({ page }, "", `?page=${page}`);
+    setOverlay({ kind: "info", page });
+    window.scrollTo({ top: 0 });
+  };
+
+  const closeOverlay = () => {
+    if (window.location.search) {
       window.history.pushState({}, "", window.location.pathname);
     }
-    setActiveGame(null);
+    setOverlay(null);
+  };
+
+  const triggerPanic = () => {
+    const target = panicUrl.trim() || "https://www.google.com";
+    window.location.href = target.startsWith("http") ? target : `https://${target}`;
   };
 
   const visiblePlayable = useMemo(() => {
@@ -103,19 +127,37 @@ function App() {
     );
   }
 
-  if (activeGame) {
-    return <GamePlayerView game={activeGame} onBack={closeGame} />;
+  if (overlay?.kind === "game") {
+    return <GamePlayerView game={overlay.game} onBack={closeOverlay} />;
+  }
+
+  if (overlay?.kind === "info") {
+    return <InfoPageView page={overlay.page} onBack={closeOverlay} />;
   }
 
   return (
     <div className="min-h-screen bg-[#fbfbfa] text-[#151515]">
       <header className="page-enter border-b border-[#e7e7e4] bg-[#fbfbfa]/95 backdrop-blur-xl">
         <div className="mx-auto flex h-[64px] max-w-[1100px] items-center justify-between px-5 sm:px-8">
-          <a href="/" className="flex items-center gap-2.5" aria-label="VerGames home">
+          <a href="/" className="flex min-w-0 items-center gap-2.5" aria-label="VerGames home">
             <span className="brand-mark"><img src="/manus-storage/vergames-logo_60ac709a.png" alt="" /></span>
-            <span className="font-display flex items-center text-[16px] font-bold tracking-[-0.06em]"><span>Ver</span><span className="wordmark-signal" aria-hidden="true" /><span>Games</span></span>
+            {displayName.trim() ? (
+              <span className="font-display truncate text-[16px] font-bold tracking-[-0.05em]">Welcome home, {displayName.trim()}</span>
+            ) : (
+              <span className="font-display flex items-center text-[16px] font-bold tracking-[-0.06em]"><span>Ver</span><span className="wordmark-signal" aria-hidden="true" /><span>Games</span></span>
+            )}
           </a>
-          <nav className="hidden items-center gap-5 text-[12px] font-medium text-[#888a87] sm:flex"><a href="#library" className="transition-colors hover:text-[#1a1a1a]">Library</a><a href="#about" className="transition-colors hover:text-[#1a1a1a]">About</a><button className="transition-colors hover:text-[#1a1a1a]">Submit a game <span className="ml-1 text-[#b0b1ae]">↗</span></button></nav>
+          <nav className="flex items-center gap-2">
+            <button type="button" onClick={triggerPanic} className="header-action-button header-action-button-panic" aria-label="Panic button — leave the site now" title="Panic button">
+              <AlertTriangle className="size-4" />
+              <span className="hidden sm:inline">Panic</span>
+            </button>
+            <SettingsMenu
+              displayName={displayName}
+              onNameChange={setDisplayName}
+              onOpenAbout={() => openInfo("about")}
+            />
+          </nav>
         </div>
       </header>
 
@@ -123,7 +165,6 @@ function App() {
         <div className="mx-auto max-w-[924px] px-5 pb-20 pt-14 sm:px-8 sm:pt-20 lg:pt-24">
           <section className="page-enter mb-10 sm:mb-12">
             <h1 className="font-display text-[clamp(2.5rem,6vw,4.65rem)] font-medium leading-[1.02] tracking-[-0.075em]">Find something to play<span className="text-[#f48120]">.</span></h1>
-            <p className="mt-4 max-w-[560px] text-[15px] leading-7 text-[#8a8b88]">A quiet corner for good browser games. Search the library, pick a category, and play right in the browser.</p>
           </section>
 
           <section aria-label="Game search and filters" className="page-enter page-enter-1">
@@ -151,11 +192,9 @@ function App() {
               </div>
             ) : <div className="empty-list"><p className="font-display text-lg font-medium tracking-[-0.04em]">No games match that search.</p><button onClick={() => { setQuery(""); setActiveCategory("All games"); }} className="mt-3 text-sm font-semibold text-[#6d706b] underline decoration-[#f48120] decoration-2 underline-offset-4">Clear filters</button></div>}
           </section>
-
-          <section id="about" className="page-enter page-enter-3 mt-16 border-t border-[#e5e5e2] pt-5"><div className="flex items-center justify-between gap-4 text-[12px] text-[#a0a19d]"><span>New games will appear here as the library grows.</span><span className="hidden items-center gap-1 font-medium text-[#858782] sm:flex">Browse the index <ArrowRight className="size-3.5" /></span></div></section>
         </div>
       </main>
-      <footer className="border-t border-[#e7e7e4] bg-[#fbfbfa]"><div className="mx-auto flex max-w-[1100px] justify-between px-5 py-6 text-[11px] text-[#a4a5a1] sm:px-8"><span>© 2026 VerGames</span><span>Free to play · Built for the browser</span></div></footer>
+      <footer className="border-t border-[#e7e7e4] bg-[#fbfbfa]"><div className="mx-auto flex max-w-[1100px] items-center justify-between px-5 py-6 text-[11px] text-[#a4a5a1] sm:px-8"><span>© 2026 VerGames</span><div className="flex items-center gap-4"><button type="button" onClick={() => openInfo("terms")} className="transition-colors hover:text-[#f48120]">Terms of Service</button><button type="button" onClick={() => openInfo("privacy")} className="transition-colors hover:text-[#f48120]">Privacy Policy</button></div></div></footer>
     </div>
   );
 }

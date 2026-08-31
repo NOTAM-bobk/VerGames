@@ -16,28 +16,32 @@ export function GameListRow({ game }: { game: PlaceholderGame }) {
 
 export function PlayableGameRow({ game, onPlay }: { game: PlayableGame; onPlay: (game: PlayableGame) => void }) {
   return (
-    <article className="game-list-row group">
+    <article
+      className="game-list-row game-list-row-clickable group"
+      onClick={() => onPlay(game)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onPlay(game);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Play ${game.title}`}
+    >
       <div className="flex min-w-0 items-start gap-4 sm:items-center">
         <span className="list-game-icon list-game-icon-live"><Play className="size-[17px]" /></span>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="truncate font-display text-[17px] font-medium tracking-[-0.045em] text-[#272826]">{game.title}</h3>
             <span className="list-badge">{game.category}</span>
-            <span className="list-badge list-badge-live">PLAYABLE</span>
           </div>
           <p className="mt-1.5 truncate text-[12px] text-[#9a9b97]">{game.description}</p>
           <p className="mt-1 font-mono text-[10px] tracking-[0.06em] text-[#b3b4b0]">{game.source} · {game.license}</p>
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-3">
-        <button
-          type="button"
-          onClick={() => onPlay(game)}
-          className="list-arrow list-arrow-live"
-          aria-label={`Play ${game.title}`}
-        >
-          <Play className="size-4" />
-        </button>
+        <span className="list-arrow list-arrow-live"><Play className="size-4" /></span>
       </div>
     </article>
   );

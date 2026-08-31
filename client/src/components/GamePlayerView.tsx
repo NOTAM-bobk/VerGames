@@ -35,7 +35,6 @@ export function GamePlayerView({ game, onBack }: GamePlayerViewProps) {
           <div className="flex min-w-0 items-center gap-2.5">
             <span className="brand-mark" aria-hidden="true"><img src="/manus-storage/vergames-logo_60ac709a.png" alt="" /></span>
             <h1 className="font-display truncate text-[16px] font-bold tracking-[-0.05em]">{game.title}</h1>
-            <span className="list-badge list-badge-live shrink-0">PLAYABLE</span>
           </div>
 
           <div className="flex items-center gap-1.5">
